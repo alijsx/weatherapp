@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+  <div class="max-w-lg w-full bg-white rounded-lg shadow-lg p-6 text-gray-800">
+    <h1 class="text-2xl font-bold text-center text-indigo-600">Weather App</h1>
+    <p class="text-center text-sm mt-2">Enter your city name to get the weather forecast.</p>
+    <div class="mt-4">
+      <input 
+        id="cityInput" 
+        type="text" 
+        placeholder="Type your city here..." 
+        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      />
+      <button 
+        id="searchBtn" 
+        class="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg">
+        Search Weather
+      </button>
+    </div>
+    <div id="popup" class="hidden fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-70 z-50">
+      <div class="bg-white p-8 rounded-xl shadow-2xl text-center max-w-md w-full">
+        <div class="text-5xl mb-4 text-yellow-400 animate-bounce">🌤️</div>
+        <h2 class="text-2xl font-semibold text-gray-800">Just Look Outside!</h2>
+        <p class="text-gray-600 mt-2">Weather is always better when you experience it for yourself.</p>
+        <button 
+          id="closePopup" 
+          class="mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg shadow-lg">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const cityInput = document.getElementById("cityInput");
+      const searchBtn = document.getElementById("searchBtn");
+      const popup = document.getElementById("popup");
+      const closePopup = document.getElementById("closePopup");
+
+      const processNames = [
+        "Fetching location...",
+        "Analyzing weather...",
+        "Gathering clouds...",
+        "Scanning satellites...",
+        "Checking wind speeds...",
+        "Calculating temperature...",
+        "Predicting rain chances...",
+        "Summarizing data...",
+        "Finalizing results...",
+        "Almost there..."
+      ];
+
+      searchBtn.addEventListener("click", () => {
+        const city = cityInput.value.trim();
+        if (city === "") {
+          alert("Please enter a city name!");
+          return;
+        }
+
+        // Disable the button and simulate processes
+        searchBtn.disabled = true;
+        searchBtn.classList.add("opacity-50", "cursor-not-allowed");
+        let processIndex = 0;
+
+        const processInterval = setInterval(() => {
+          if (processIndex < processNames.length) {
+            searchBtn.textContent = processNames[processIndex];
+            processIndex++;
+          } else {
+            clearInterval(processInterval);
+            searchBtn.textContent = "Search Weather";
+            searchBtn.disabled = false;
+            searchBtn.classList.remove("opacity-50", "cursor-not-allowed");
+
+            // Show popup
+            popup.classList.remove("hidden");
+          }
+        }, 2000); // Change process name every 2 seconds
+      });
+
+      closePopup.addEventListener("click", () => {
+        popup.classList.add("hidden");
+      });
+    });
+  </script>
+</body>
+</html>
